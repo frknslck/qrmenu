@@ -1,19 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Outlet, useLocation } from "react-router-dom"
-import { Box, useMediaQuery, useTheme } from "@mui/material"
+import { Box } from "@mui/material"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
-import MobileNav from "./MobileNav"
-import PageTransition from "./PageTransition"
-import ScrollToTop from "./ScrollToTop"
 
-const Layout = () => {
+const Layout = ({ children }) => {
   const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,20 +22,13 @@ const Layout = () => {
   }, [])
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", position: "relative" }}>
-      <ScrollToTop />
-
-      {/* Navbar */}
-      {!isMobile ? <Navbar scrolled={scrolled} /> : <MobileNav scrolled={scrolled} />}
-
-      {/* Main Content with Page Transitions */}
-      <Box component="main" sx={{ flexGrow: 1 }}>
-        <PageTransition location={location}>
-          <Outlet />
-        </PageTransition>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <Navbar scrolled={scrolled} />
+      <Box component="main" sx={{ flexGrow: 1, pt: "64px" }}>
+        {" "}
+        {/* Navbar yüksekliği kadar padding-top ekle */}
+        {children}
       </Box>
-
-      {/* Footer */}
       <Footer />
     </Box>
   )

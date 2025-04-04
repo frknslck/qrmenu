@@ -2,19 +2,11 @@
 
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Card, CardMedia, CardContent, Typography, Box, Chip, IconButton, Button } from "@mui/material"
-import { motion } from "framer-motion"
-import { Favorite, FavoriteBorder, ShoppingBag, ExpandMore, ExpandLess } from "@mui/icons-material"
+import { Card, CardMedia, CardContent, Typography, Box, Chip, IconButton, Button, Rating } from "@mui/material"
+import { Favorite, FavoriteBorder, ShoppingBag, Star } from "@mui/icons-material"
 
 const FoodCard = ({ product }) => {
-  const [expanded, setExpanded] = useState(false)
   const [favorite, setFavorite] = useState(false)
-
-  const handleExpandClick = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setExpanded(!expanded)
-  }
 
   const handleFavoriteClick = (e) => {
     e.preventDefault()
@@ -24,20 +16,17 @@ const FoodCard = ({ product }) => {
 
   return (
     <Card
-      component={motion.div}
-      whileHover={{ y: -10 }}
       sx={{
-        height: "100%",
+        width: 250, // Sabit yükseklik
         display: "flex",
         flexDirection: "column",
         position: "relative",
-        overflow: "visible",
-        borderRadius: 4,
-        backgroundColor: "background.paper",
-        border: "1px solid rgba(255, 255, 255, 0.05)",
+        overflow: "hidden",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
         "&:hover": {
-          boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-          borderColor: "primary.main",
+          transform: "translateY(-8px)",
+          boxShadow: "0 12px 20px rgba(0,0,0,0.15)",
         },
       }}
     >
@@ -46,32 +35,33 @@ const FoodCard = ({ product }) => {
         onClick={handleFavoriteClick}
         sx={{
           position: "absolute",
-          top: 10,
-          right: 10,
+          top: 8,
+          right: 8,
           zIndex: 2,
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          color: favorite ? "primary.main" : "white",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          color: favorite ? "error.main" : "text.secondary",
           "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
           },
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
         }}
+        size="small"
       >
-        {favorite ? <Favorite /> : <FavoriteBorder />}
+        {favorite ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />}
       </IconButton>
 
       {/* Popular Badge */}
       {product.popular && (
         <Chip
           label="Popüler"
-          color="secondary"
+          color="primary"
           size="small"
           sx={{
             position: "absolute",
-            top: 10,
-            left: 10,
+            top: 8,
+            left: 8,
             zIndex: 2,
             fontWeight: 600,
-            color: "background.default",
           }}
         />
       )}
@@ -82,37 +72,26 @@ const FoodCard = ({ product }) => {
         to={`/urun/${product.id}`}
         sx={{
           position: "relative",
-          height: 200,
+          height: 180, // Sabit yükseklik
           overflow: "hidden",
-          borderRadius: "16px 16px 0 0",
         }}
       >
         <CardMedia
           component="img"
-          height="200"
+          height="180"
           image={product.image}
           alt={product.name}
           sx={{
             transition: "transform 0.5s ease",
             "&:hover": {
-              transform: "scale(1.1)",
+              transform: "scale(1.05)",
             },
-          }}
-        />
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            height: "30%",
-            background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
           }}
         />
       </Box>
 
       {/* Content */}
-      <CardContent sx={{ flexGrow: 1, p: 3, pt: 2 }}>
+      <CardContent sx={{ flexGrow: 1, p: 2, display: "flex", flexDirection: "column" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 1 }}>
           <Typography
             component={Link}
@@ -122,7 +101,15 @@ const FoodCard = ({ product }) => {
               fontWeight: 600,
               color: "text.primary",
               textDecoration: "none",
+              fontSize: "1rem",
               "&:hover": { color: "primary.main" },
+              lineHeight: 1.2,
+              mb: 0.5,
+              height: 40, // Sabit yükseklik
+              overflow: "hidden",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
             }}
           >
             {product.name}
@@ -131,15 +118,25 @@ const FoodCard = ({ product }) => {
             variant="subtitle1"
             sx={{
               fontWeight: 700,
-              color: "white",
-              backgroundColor: "primary.main",
-              px: 1.5,
-              py: 0.5,
-              borderRadius: 2,
-              fontSize: "0.9rem",
+              color: "primary.main",
+              whiteSpace: "nowrap",
+              ml: 1,
             }}
           >
             {product.price} ₺
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+          <Rating
+            value={product.rating}
+            precision={0.5}
+            size="small"
+            readOnly
+            emptyIcon={<Star style={{ opacity: 0.55 }} fontSize="inherit" />}
+          />
+          <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
+            ({product.rating})
           </Typography>
         </Box>
 
@@ -149,27 +146,20 @@ const FoodCard = ({ product }) => {
           sx={{
             mb: 2,
             display: "-webkit-box",
-            WebkitLineClamp: expanded ? "unset" : 2,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
+            height: 40, // Sabit yükseklik
+            lineHeight: 1.3,
           }}
         >
           {product.description}
         </Typography>
 
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<ShoppingBag />}
-            sx={{ borderRadius: 8, px: 2 }}
-          >
+        <Box sx={{ mt: "auto" }}>
+          <Button variant="contained" color="primary" size="small" fullWidth startIcon={<ShoppingBag />}>
             Sepete Ekle
           </Button>
-          <IconButton size="small" onClick={handleExpandClick}>
-            {expanded ? <ExpandLess /> : <ExpandMore />}
-          </IconButton>
         </Box>
       </CardContent>
     </Card>

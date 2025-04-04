@@ -83,25 +83,25 @@ const popularItems = [
 const testimonials = [
   {
     id: 1,
-    name: "Ahmet Yılmaz",
+    name: "Yağmur Kaya",
     rating: 5,
     comment:
-      "Harika bir deneyimdi! Yemekler çok lezzetli, servis hızlı ve personel çok ilgiliydi. Kesinlikle tekrar geleceğim.",
-    image: "https://placehold.co/100x100?text=AY",
+      "Harika bir deneyimdi! Yemekler çok lezzetli, servis hızlıydı. Kesinlikle tekrar geleceğim.",
+    image: "https://placehold.co/100x100?text=YK",
   },
   {
     id: 2,
-    name: "Ayşe Kaya",
+    name: "Efe Kaya",
     rating: 4.5,
     comment: "Kahvaltı menüsü çok zengin ve taze. Özellikle simit ve peynir tabağı favorim oldu. Kahveleri de harika!",
-    image: "https://placehold.co/100x100?text=AK",
+    image: "https://placehold.co/100x100?text=EK",
   },
   {
     id: 3,
-    name: "Mehmet Demir",
+    name: "Ahmet Kaya",
     rating: 5,
     comment: "Tatlıları bir harika! Özellikle künefe ve baklava çok başarılı. Ambiyans da çok güzel, rahat bir ortam.",
-    image: "https://placehold.co/100x100?text=MD",
+    image: "https://placehold.co/100x100?text=AK",
   },
 ]
 
